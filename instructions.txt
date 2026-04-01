@@ -1,0 +1,137 @@
+Pour publier votre package Python sur **GitHub** en plus de PyPI, vous devez créer un dépôt GitHub et y ajouter votre code source. Voici les étapes détaillées pour le faire :
+
+---
+
+## 1. **Créez un dépôt GitHub**
+- Allez sur [GitHub](https://github.com) et connectez-vous.
+- Cliquez sur **"New"** (Nouveau dépôt) en haut à droite.
+- Donnez un nom à votre dépôt (par exemple, `olvid-command`).
+- Choisissez si le dépôt est **public** ou **privé**.
+- Cochez l'option **"Add a README file"** (optionnel mais recommandé).
+- Cliquez sur **"Create repository"**.
+
+---
+
+## 2. **Initialisez un dépôt Git local**
+Si ce n'est pas déjà fait, initialisez un dépôt Git dans le dossier de votre projet :
+```bash
+cd /chemin/vers/votre/projet/olvid_command
+git init
+```
+
+---
+
+## 3. **Ajoutez vos fichiers au dépôt local**
+Ajoutez tous les fichiers de votre projet (sauf ceux ignorés) :
+```bash
+git add .
+```
+- Si vous avez des fichiers à ignorer (comme `.venv/`, `dist/`, etc.), créez un fichier `.gitignore` :
+  ```bash
+  echo "dist/" >> .gitignore
+  echo ".venv/" >> .gitignore
+  echo "*.pyc" >> .gitignore
+  echo "__pycache__/" >> .gitignore
+  git add .gitignore
+  ```
+
+---
+
+## 4. **Faites un commit initial**
+```bash
+git commit -m "Initial commit"
+```
+
+---
+
+## 5. **Lie le dépôt local à GitHub**
+Ajoutez l'URL de votre dépôt GitHub comme dépôt distant :
+```bash
+git remote add origin https://github.com/votre_utilisateur/olvid-command.git
+```
+- Remplacez `votre_utilisateur` par votre nom d'utilisateur GitHub.
+
+---
+
+## 6. **Poussez votre code sur GitHub**
+```bash
+git push -u origin main
+```
+- Si vous utilisez une branche autre que `main` (par exemple `master`), remplacez `main` par le nom de votre branche.
+
+---
+
+## 7. **(Optionnel) Ajoutez des tags pour les versions**
+Pour marquer les versions de votre package (par exemple `0.1`, `0.2`), utilisez des tags Git :
+```bash
+git tag -a v0.1 -m "Version 0.1"
+git push origin v0.1
+```
+
+---
+
+## 8. **(Optionnel) Configurez GitHub Actions pour automatiser les builds**
+Si vous voulez automatiser la construction et le test de votre package à chaque commit, vous pouvez ajouter un fichier de workflow GitHub Actions :
+- Créez un fichier `.github/workflows/python-publish.yml` dans votre dépôt.
+- Voici un exemple de base pour tester et publier sur PyPI :
+  ```yaml
+  name: Upload Python Package
+
+  on:
+    release:
+      types: [published]
+
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
+  ```
+- Ajoutez votre token PyPI dans les secrets GitHub (`Settings > Secrets > New repository secret`).
+
+---
+
+## 9. **Partagez votre dépôt**
+- Votre code est maintenant disponible sur GitHub à l'adresse :
+  `https://github.com/votre_utilisateur/olvid-command`
+- Vous pouvez partager ce lien avec d'autres développeurs.
+
+---
+
+## Résumé des commandes
+```bash
+# 1. Initialiser Git
+git init
+# 2. Ajouter les fichiers
+git add .
+# 3. Commit
+git commit -m "Initial commit"
+# 4. Lier à GitHub
+git remote add origin https://github.com/votre_utilisateur/olvid-command.git
+# 5. Pousser
+git push -u origin main
+```
+
+---
+
+### Points importants
+- **Ne publiez pas vos tokens ou mots de passe** dans le dépôt.
+- **Utilisez `.gitignore`** pour exclure les fichiers inutiles (comme les builds, les environnements virtuels, etc.).
+- **Documentez votre projet** avec un `README.md` clair pour aider les utilisateurs.
+
+Si vous avez besoin d'aide pour configurer un fichier spécifique (comme `.gitignore` ou le workflow GitHub Actions), dites-le-moi !
