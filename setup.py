@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="olvid_command",
-    version="0.2",
+    version="0.3",
     packages=find_packages(),
     description="Integration of commands and commands group in olvid",
     author="SamBotPy",
