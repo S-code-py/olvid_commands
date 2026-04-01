@@ -1,0 +1,3 @@
+olvid-bot
+asyncio
+typing

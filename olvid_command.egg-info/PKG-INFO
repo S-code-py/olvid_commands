@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: olvid_command
+Version: 0.2
+Summary: Integration of commands and commands group in olvid
+Author: SamBotPy
+Author-email: pypi.prideful261@passinbox.com
+License: Open Source
+License-File: LICENSE
+Requires-Dist: olvid-bot
+Requires-Dist: asyncio
+Requires-Dist: typing
+Dynamic: author
+Dynamic: author-email
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
